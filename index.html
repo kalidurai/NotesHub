@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/acer/Downloads/NotesHub%20(1)%20(1)%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotesHub</title>
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #2C4068;
+    --paper: #FAF6ED;
+    --amber: #D98E3D;
+    --amber-dark: #B5701F;
+    --sage: #7A8B6F;
+    --ink: #1A1A1A;
+    --ink-soft: #5A5A52;
+    --line: #E3DCC8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .hidden { display: none !important; }
+
+  /* ---------- LOGIN PAGE ---------- */
+  #login-screen {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .login-card {
+    background: var(--paper);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 380px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-card::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 5px;
+    background: var(--amber);
+  }
+  .login-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber-dark);
+    margin-bottom: 0.8rem;
+  }
+  .login-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 0.3rem;
+  }
+  .login-sub {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 1.8rem;
+  }
+  .field { margin-bottom: 1rem; }
+  .field label {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .field-input {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    padding: 11px 14px;
+  }
+  .field-input:focus-within { border-color: var(--amber); }
+  .field-input input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .login-error {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #A32D2D;
+    margin: -0.3rem 0 1rem;
+  }
+  .login-btn {
+    width: 100%;
+    background: var(--navy);
+    color: var(--paper);
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  .login-btn:hover { background: var(--navy-light); }
+  .login-foot {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-top: 1.4rem;
+  }
+
+  /* ---------- APP SCREEN ---------- */
+  #app-screen { min-height: 100vh; padding-bottom: 4rem; }
+
+  .topbar {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 2.5rem 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .topbar-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .topbar-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .eyebrow {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .logout-btn {
+    background: rgba(250,246,237,0.08);
+    border: 1px solid rgba(250,246,237,0.2);
+    color: var(--paper);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .logout-btn:hover { background: rgba(250,246,237,0.16); }
+  .topbar h1 { font-size: 32px; font-weight: 700; margin: 0 0 0.4rem; }
+  .topbar p { font-family: 'Courier New', monospace; font-size: 13px; color: rgba(250,246,237,0.65); margin: 0; }
+
+  .search-wrap { max-width: 760px; margin: -1.4rem auto 0; padding: 0 1.5rem; position: relative; z-index: 2; }
+  .search-box {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 14px rgba(27,42,74,0.12);
+  }
+  .search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    width: 100%;
+  }
+
+  .content { max-width: 760px; margin: 2rem auto 0; padding: 0 1.5rem; display: flex; flex-direction: column; gap: 14px; }
+
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .card:hover { border-color: var(--sage); }
+  .card-head {
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    font-family: inherit;
+  }
+  .card-head-left { display: flex; align-items: center; gap: 16px; }
+  .code-stamp {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+    border-radius: 4px;
+    padding: 5px 9px;
+    transform: rotate(-1.5deg);
+    white-space: nowrap;
+  }
+  .subject-name { font-size: 18px; font-weight: 700; margin: 0 0 3px; }
+  .unit-progress { font-family: 'Courier New', monospace; font-size: 11.5px; color: var(--sage); }
+  .chev { color: var(--ink-soft); transition: transform 0.2s ease; display: inline-block; }
+  .chev-open { transform: rotate(180deg); color: var(--amber-dark); }
+
+  .unit-list { border-top: 1px solid var(--line); padding: 14px 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .unit-title { font-family: 'Courier New', monospace; font-size: 13px; margin: 0 0 8px; }
+  .resource-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .res-chip {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    border: none;
+  }
+  .res-chip-active { background: var(--amber); color: #fff; cursor: pointer; }
+  .res-chip-active:hover { background: var(--amber-dark); }
+  .res-chip-disabled { color: var(--ink-soft); background: var(--paper); border: 1px dashed var(--line); cursor: not-allowed; opacity: 0.75; }
+
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-family: 'Courier New', monospace; font-size: 13px; }
+
+  @media (max-width: 480px) {
+    .topbar h1 { font-size: 26px; }
+    .card-head { padding: 14px 16px; }
+    .unit-list { padding: 12px 16px 14px; }
+    .res-chip { font-size: 11.5px; padding: 6px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="login-screen">
+  <form class="login-card" id="login-form">
+    <div class="login-badge">NotesHub</div>
+    <h1 class="login-title">Welcome back</h1>
+    <p class="login-sub">Sign in to reach your semester notes</p>
+
+    <div class="field">
+      <label for="name">Name</label>
+      <div class="field-input">
+        <input id="name" placeholder="Your name" autocomplete="name">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <div class="field-input">
+        <input id="password" type="password" placeholder="Any password works" autocomplete="current-password">
+      </div>
+    </div>
+
+    <p class="login-error hidden" id="login-error">Enter both name and password to continue</p>
+
+    <button type="submit" class="login-btn">Sign in</button>
+    <p class="login-foot">Demo login · any name &amp; password works</p>
+  </form>
+</div>
+
+<!-- ============ APP SCREEN ============ -->
+<div id="app-screen" class="hidden">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-row">
+        <div class="eyebrow">NotesHub</div>
+        <button class="logout-btn" id="logout-btn">Logout (<span id="user-name"></span>)</button>
+      </div>
+      <h1>Semester notes, all in one place</h1>
+      <p>6 subjects · notes, important Qs, videos &amp; model papers</p>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input id="search-input" placeholder="Search subject or code...">
+    </div>
+  </div>
+
+  <div class="content" id="subject-list"></div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// EDIT THIS DATA to add your own notes / PDF / video links.
+// For each unit, fill in the resources you have. Leave a value as ""
+// if you don't have it yet — that resource will show as "Coming soon".
+//   notes      -> PDF notes link
+//   important  -> Important questions PDF link
+//   video      -> YouTube / video lecture link
+//   model      -> Model question paper PDF link
+// ---------------------------------------------------------------------------
+const SUBJECTS = [
+  {
+    code: "CS3551",
+    name: "Distributed Computing",
+    units: [
+      { title: "Unit 1 - Introduction to Distributed Systems", notes: "http://enggtree.com/wp-content/uploads/2024/01/CS3551-Distributed-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=q5sdiLciObQ", model: "https://www.enggtree.com/cs3551-distributed-computing-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Message Passing & RPC", notes: "http://enggtree.com/wp-content/uploads/2024/01/CS3551-Distributed-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=q5sdiLciObQ", model: "https://www.enggtree.com/cs3551-distributed-computing-question-papers-2021-regulation/" },
+      { title: "Unit 3 - Synchronization", notes: "http://enggtree.com/wp-content/uploads/2024/01/CS3551-Distributed-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=q5sdiLciObQ", model: "https://www.enggtree.com/cs3551-distributed-computing-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Resource & Process Management", notes: "http://enggtree.com/wp-content/uploads/2024/01/CS3551-Distributed-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=q5sdiLciObQ", model: "https://www.enggtree.com/cs3551-distributed-computing-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Distributed File Systems", notes: "http://enggtree.com/wp-content/uploads/2024/01/CS3551-Distributed-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=q5sdiLciObQ", model: "https://www.enggtree.com/cs3551-distributed-computing-question-papers-2021-regulation/" },
+    ],
+  },
+  {
+    code: "CB3491",
+    name: "Cryptography & Cyber Security",
+    units: [
+      { title: "Unit 1 - Introduction to Security", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CB3491-Cryptography-and-Cyber-Security-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=-717E9ajGxk", model: "https://www.enggtree.com/cb3491-cryptography-and-cyber-security-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Symmetric Key Cryptography", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CB3491-Cryptography-and-Cyber-Security-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=-717E9ajGxk", model: "https://www.enggtree.com/cb3491-cryptography-and-cyber-security-question-papers-2021-regulation/" },
+      { title: "Unit 3 - Asymmetric Key Cryptography", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CB3491-Cryptography-and-Cyber-Security-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=-717E9ajGxk", model: "https://www.enggtree.com/cb3491-cryptography-and-cyber-security-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Integrity & Authentication", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CB3491-Cryptography-and-Cyber-Security-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=-717E9ajGxk", model: "https://www.enggtree.com/cb3491-cryptography-and-cyber-security-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Cyber Security Practices", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CB3491-Cryptography-and-Cyber-Security-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=-717E9ajGxk", model: "https://www.enggtree.com/cb3491-cryptography-and-cyber-security-question-papers-2021-regulation/" },
+    ],
+  },
+  {
+    code: "CCS335",
+    name: "Cloud Computing",
+    units: [
+      { title: "Unit 1 - Cloud Computing Foundations", notes: "https://www.enggtree.com/wp-content/uploads/2024/01/CCS335-Cloud-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=Gv-5o4sXpfg", model: "https://www.enggtree.com/ccs335-cloud-computing-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Virtualization", notes: "https://www.enggtree.com/wp-content/uploads/2024/01/CCS335-Cloud-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=Gv-5o4sXpfg", model: "https://www.enggtree.com/ccs335-cloud-computing-question-papers-2021-regulation/" },
+      { title: "Unit 3 - Cloud Computing Architecture", notes: "https://www.enggtree.com/wp-content/uploads/2024/01/CCS335-Cloud-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=Gv-5o4sXpfg", model: "https://www.enggtree.com/ccs335-cloud-computing-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Resource Management", notes: "https://www.enggtree.com/wp-content/uploads/2024/01/CCS335-Cloud-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=Gv-5o4sXpfg", model: "https://www.enggtree.com/ccs335-cloud-computing-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Cloud Security", notes: "https://www.enggtree.com/wp-content/uploads/2024/01/CCS335-Cloud-Computing-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=Gv-5o4sXpfg", model: "https://www.enggtree.com/ccs335-cloud-computing-question-papers-2021-regulation/" },
+    ],
+  },
+  {
+    code: "CS3501",
+    name: "Compiler Design",
+    units: [
+      { title: "Unit 1 - Introduction to Compilers", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3501-Compiler-Design-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=_tG3i5YrPZo", model: "https://www.enggtree.com/cs3501-compiler-design-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Syntax Analysis", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3501-Compiler-Design-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=_tG3i5YrPZo", model: "https://www.enggtree.com/cs3501-compiler-design-question-papers-2021-regulation/" },
+      { title: "Unit 3 - Semantic Analysis", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3501-Compiler-Design-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=_tG3i5YrPZo", model: "https://www.enggtree.com/cs3501-compiler-design-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Code Optimization", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3501-Compiler-Design-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=_tG3i5YrPZo", model: "https://www.enggtree.com/cs3501-compiler-design-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Code Generation", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3501-Compiler-Design-Lecture-Notes-1.pdf?x53111", important: "", video: "https://www.youtube.com/watch?v=_tG3i5YrPZo", model: "https://www.enggtree.com/cs3501-compiler-design-question-papers-2021-regulation/" },
+    ],
+  },
+  {
+    code: "CS3591",
+    name: "Computer Networks",
+    units: [
+      { title: "Unit 1 - Introduction & Physical Layer", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3591-Computer-Networks-Lecture-Notes-1.pdf?x53111", important: "", video: "http://youtube.com/watch?v=mef8DydJJAs", model: "https://www.enggtree.com/cs3591-computer-networks-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Data Link Layer", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3591-Computer-Networks-Lecture-Notes-1.pdf?x53111", important: "", video: "http://youtube.com/watch?v=mef8DydJJAs", model: "https://www.enggtree.com/cs3591-computer-networks-question-papers-2021-regulation/" },
+      { title: "Unit 3 - Network Layer", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3591-Computer-Networks-Lecture-Notes-1.pdf?x53111", important: "", video: "http://youtube.com/watch?v=mef8DydJJAs", model: "https://www.enggtree.com/cs3591-computer-networks-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Transport Layer", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3591-Computer-Networks-Lecture-Notes-1.pdf?x53111", important: "", video: "http://youtube.com/watch?v=mef8DydJJAs", model: "https://www.enggtree.com/cs3591-computer-networks-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Application Layer", notes: "https://www.enggtree.com/wp-content/uploads/2023/12/CS3591-Computer-Networks-Lecture-Notes-1.pdf?x53111", important: "", video: "http://youtube.com/watch?v=mef8DydJJAs", model: "https://www.enggtree.com/cs3591-computer-networks-question-papers-2021-regulation/" },
+    ],
+  },
+  {
+    code: "CCS3354",
+    name: "Big Data Analytics",
+    units: [
+      { title: "Unit 1 - Introduction to Big Data", notes: "https://mrcet.com/downloads/digital_notes/IT/BIG%20DATA%20ANALYTICS.pdf", important: "", video: "https://www.youtube.com/watch?v=ErMfmcGThZw", model: "https://www.enggtree.com/ccs334-big-data-analytics-question-papers-2021-regulation/" },
+      { title: "Unit 2 - Hadoop & HDFS", notes: "https://mrcet.com/downloads/digital_notes/IT/BIG%20DATA%20ANALYTICS.pdf", important: "", video: "https://www.youtube.com/watch?v=ErMfmcGThZw", model: "https://www.enggtree.com/ccs334-big-data-analytics-question-papers-2021-regulation/" },
+      { title: "Unit 3 - MapReduce", notes: "https://mrcet.com/downloads/digital_notes/IT/BIG%20DATA%20ANALYTICS.pdf", important: "", video: "https://www.youtube.com/watch?v=ErMfmcGThZw", model: "https://www.enggtree.com/ccs334-big-data-analytics-question-papers-2021-regulation/" },
+      { title: "Unit 4 - Data Analytics with NoSQL", notes: "https://mrcet.com/downloads/digital_notes/IT/BIG%20DATA%20ANALYTICS.pdf", important: "", video: "https://www.youtube.com/watch?v=ErMfmcGThZw", model: "https://www.enggtree.com/ccs334-big-data-analytics-question-papers-2021-regulation/" },
+      { title: "Unit 5 - Big Data Frameworks", notes: "https://mrcet.com/downloads/digital_notes/IT/BIG%20DATA%20ANALYTICS.pdf", important: "", video: "https://www.youtube.com/watch?v=ErMfmcGThZw", model: "https://www.enggtree.com/ccs334-big-data-analytics-question-papers-2021-regulation/" },
+    ],
+  },
+];
+
+const RESOURCE_TYPES = [
+  { key: "notes", label: "Notes" },
+  { key: "important", label: "Important questions" },
+  { key: "video", label: "Video lecture" },
+  { key: "model", label: "Model question paper" },
+];
+
+let openCode = SUBJECTS[0].code;
+let query = "";
+
+// ---------- LOGIN ----------
+const loginForm = document.getElementById("login-form");
+const loginScreen = document.getElementById("login-screen");
+const appScreen = document.getElementById("app-screen");
+const loginError = document.getElementById("login-error");
+const userNameSpan = document.getElementById("user-name");
+
+loginForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!name || !password) {
+    loginError.classList.remove("hidden");
+    return;
+  }
+  loginError.classList.add("hidden");
+
+  userNameSpan.textContent = name;
+  loginScreen.classList.add("hidden");
+  appScreen.classList.remove("hidden");
+  renderSubjects();
+});
+
+document.getElementById("logout-btn").addEventListener("click", function () {
+  appScreen.classList.add("hidden");
+  loginScreen.classList.remove("hidden");
+  loginForm.reset();
+  loginError.classList.add("hidden");
+});
+
+// ---------- SEARCH ----------
+document.getElementById("search-input").addEventListener("input", function (e) {
+  query = e.target.value;
+  renderSubjects();
+});
+
+// ---------- RENDER ----------
+function renderSubjects() {
+  const container = document.getElementById("subject-list");
+  const filtered = SUBJECTS.filter(function (s) {
+    const q = query.toLowerCase();
+    return s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q);
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">No subject matches "' + escapeHtml(query) + '"</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(renderCard).join("");
+
+  // wire up card head toggles
+  container.querySelectorAll(".card-head").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const code = btn.getAttribute("data-code");
+      openCode = openCode === code ? null : code;
+      renderSubjects();
+    });
+  });
+
+  // wire up resource chip clicks
+  container.querySelectorAll(".res-chip-active").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const link = btn.getAttribute("data-link");
+      if (link) window.open(link, "_blank", "noopener,noreferrer");
+    });
+  });
+}
+
+function renderCard(subject) {
+  const totalResources = subject.units.length * RESOURCE_TYPES.length;
+  let filledResources = 0;
+  subject.units.forEach(function (u) {
+    RESOURCE_TYPES.forEach(function (r) {
+      if (u[r.key]) filledResources++;
+    });
+  });
+
+  const isOpen = openCode === subject.code;
+
+  let unitListHtml = "";
+  if (isOpen) {
+    const unitsHtml = subject.units.map(function (unit) {
+      const chips = RESOURCE_TYPES.map(function (res) {
+        const link = unit[res.key];
+        const hasLink = Boolean(link);
+        const cls = hasLink ? "res-chip res-chip-active" : "res-chip res-chip-disabled";
+        const dataLink = hasLink ? ' data-link="' + escapeHtml(link) + '"' : "";
+        const label = hasLink ? res.label : res.label + " (coming soon)";
+        return '<button type="button" class="' + cls + '"' + dataLink + (hasLink ? "" : " disabled") + '>' + escapeHtml(label) + "</button>";
+      }).join("");
+
+      return '<div class="unit-block"><p class="unit-title">' + escapeHtml(unit.title) + '</p><div class="resource-row">' + chips + "</div></div>";
+    }).join("");
+
+    unitListHtml = '<div class="unit-list">' + unitsHtml + "</div>";
+  }
+
+  return (
+    '<div class="card">' +
+      '<button class="card-head" data-code="' + escapeHtml(subject.code) + '">' +
+        '<div class="card-head-left">' +
+          '<span class="code-stamp">' + escapeHtml(subject.code) + '</span>' +
+          '<div>' +
+            '<h3 class="subject-name">' + escapeHtml(subject.name) + '</h3>' +
+            '<span class="unit-progress">' + filledResources + ' / ' + totalResources + ' resources added</span>' +
+          '</div>' +
+        '</div>' +
+        '<span class="chev' + (isOpen ? ' chev-open' : '') + '">&#9660;</span>' +
+      '</button>' +
+      unitListHtml +
+    '</div>'
+  );
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : str;
+  return div.innerHTML;
+}
+</script>
+
+
+</body></html>
